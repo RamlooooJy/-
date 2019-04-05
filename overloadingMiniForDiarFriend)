@@ -1,0 +1,95 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+class ARR{
+private:
+    int *a;
+    int size;
+    int head=0;
+    int num;
+
+public:
+    ARR(int q){
+        try{
+            if(q<=0)
+                throw 123;
+            else if(q>2222222){
+                throw "Error";
+            }
+        }
+        catch(int i){                   //1
+            cout<<endl<<"Exception, Массив не может иметь отрицательное число переменных";
+            return;
+        }
+        catch(char const* err){     //2
+            cout<<err;
+            return;
+        }
+        a= new int[q];
+        size=q;
+        for(int i=0; i<size;i++){
+            try{
+                cin>>num;
+                if(!cin){
+                    cin.clear();
+                    num=0;
+                    throw "Exception, можно только целые";     //3
+                }
+                else a[i]=num;
+
+        }
+            catch (char const* err){
+                cout<<endl<<err;
+                cin.clear();
+                cin.ignore();
+                i--;
+                continue;
+            }
+        }
+    }
+    void getArray(){
+        for(int i=0;i<size; i++){
+            cout<<a[i]<<"\t";
+        }
+    }
+
+    void operator ++(int SS){
+        try{
+            if(head>=size-1)
+                throw "Error, overflow";
+            head++;
+
+        }
+        catch (char const* err){                //4
+            cout<<endl<<err;
+        }
+
+};
+    void getElem(){
+        cout<<endl<<a[head];
+        return;
+    }
+
+};
+
+
+
+
+int main() {
+
+    ARR ar(2);
+    ar.getArray();
+    cout<<endl;
+    ar++;
+    ar++;
+   //  ar++;
+   // ar++;
+    //ar++;
+
+    ar.getElem();
+
+
+    return 0;
+}
