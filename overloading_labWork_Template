@@ -1,0 +1,164 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <math.h>
+
+using namespace std;
+class Exception
+{
+private:
+    string m_error;
+
+public:
+    Exception(string error) : m_error(error){
+
+    }
+
+    const char* getError() {
+        return m_error.c_str();
+    }
+};
+
+template <class T >
+class Pair
+{
+    friend class Ship;
+private:
+    int DLE; //отслеживание удалений
+    T *dec;   //очередь
+    int top=-1;   //голова
+    int size;   // размер очереди
+public:
+    Pair (int ssize);   //конструктор
+    void printDec(){
+        try{
+            if(operator bool()){
+                throw Exception ("Ошибка очередь пуста");
+            }
+        }
+        catch (Exception &exception){
+            cout <<endl<< exception.getError() << ")\n";
+        }
+        cout<<endl;
+        for(int i=0; i<=top; i++) {
+            cout<<dec[i]<<" ";
+        }
+    };   //вывод
+
+    void operator ++(int index){
+        cout<<endl<<"Ввод:"<<endl;
+        T g;
+newinput:try{
+            cin>>g;
+            if(!cin){
+                throw Exception ("Ошибка, разрешены только значения типа int");
+            }
+        }
+        catch (Exception &exception){
+            cout <<endl<< exception.getError() << ")\n";
+            cin.clear();
+            goto newinput;
+
+        }
+        if(DLE>size){
+            size++;
+            DLE--;
+        }
+        //Pair temp(*this);
+        if(top+1>size){
+
+            for (int i = 0; i < top; i++){
+                dec[i] = dec[i + 1];
+            }
+            dec[top]=g;
+            return;
+        }
+        top++;
+        dec[top]=g;
+        return;
+    };
+
+    void operator --(int index){
+        try{
+            if(operator bool()){
+                throw Exception ("Ошибка очередь пуста");
+            }
+        }
+        catch (Exception &exception){
+            cout <<endl<< exception.getError() << ")\n";
+        }
+        top--;
+        size--;
+        DLE++;
+        return;
+    };
+    operator bool() const
+    {
+        if(top==-1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+};
+template <class T>
+Pair <T>::Pair (int ssize) {
+    size=ssize-1;
+    dec = new T[size];
+    DLE=size;
+};
+
+class Ship
+{
+public:
+    string  name;
+    int displacement;
+    string tipe;
+
+    friend std::ostream& operator<<(ostream &arg1, const Ship &arg2)
+    {
+        arg1 << "Name: " << arg2.name <<", displacement: " << arg2.displacement <<", tipe: "<< arg2.tipe<<endl;
+
+        return arg1;
+    }
+    friend istream& operator>>(istream &is, Ship& n){
+        cout << "Input name:\t>>";
+        is >> n.name;
+
+        cout << "Input displacement:\t>>";
+        is >> n.displacement;
+
+        cout << "Input tipe: \t>>";
+        is >> n.tipe;
+        return is;
+    }
+
+};
+int main(){
+    Pair <class Ship> deec(5);
+    int action;
+    bool Exit=true;
+    while(Exit){
+        cout<<endl<<"1. Вывести очередь"<<endl
+            <<"2. Добавить Элемент"<<endl
+            <<"3. Удалить Элемент"<<endl;
+        cin >> action;
+        switch (action) {
+            case 1:
+                deec.printDec();
+                break;
+            case 2:
+                deec++;
+                break;
+            case 3:
+                deec--;
+                break;
+            default:
+                Exit=false;
+                break;
+        }
+
+    }
+    cout<<"................................Bye!\n";
+    
