@@ -1,0 +1,387 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <ctime>
+#include <iomanip>
+
+using namespace std;
+
+class Exception
+{
+private:
+    std::string m_error;
+
+public:
+    Exception(std::string error) : m_error(error){
+    }
+
+    const char* getError() { return m_error.c_str(); }
+};
+
+class Sentence
+{
+private:
+      string sentence="This somecommand was printing someTHINGS, when you somestarted this program";
+      string word="";
+    string sentence2="ababa abakldsfaba flsdfdsjlfdsjf QQQfajlaskkmsd QQQaadsQQQ ";
+    string word2="aba";
+
+public:
+    Sentence() {
+    }
+    /*   void input_sentence(){
+           cin.get(); // очистка памяти от ентер
+           cout << endl << "Введите предложение: ";
+           getline(cin, sentence);
+       };//Ввод предложения
+       void input_word(){
+           cin.get();
+           cout << endl << "Введите слово: ";
+           getline(cin, word);
+       };// Ввод слова*/
+
+    void output_sentence(){
+        try {
+            if (sentence.size() == 0) throw Exception ("В предложении нет символов!");
+            else cout << endl << "Предложение: " << sentence;
+        }
+        catch (Exception &exception){
+            cout <<endl<< exception.getError() << ")\n";
+        };
+
+    };
+    void output_word(){
+        try {
+            if (word.size() == 0) throw Exception("В слове нет символов!");
+            else cout << endl << "Подстрока: " << word;
+        }
+        catch (Exception &exception){
+            cout <<endl<<  exception.getError() << ")\n";
+        };
+
+    };
+
+    void findWord(){
+        int spos=0;
+        int epos=0;
+        int pos=0;
+        string out;
+        string func1;
+            for(int i=0; i<sentence.size();i++){
+                if(sentence[i]==' '){
+                    epos=i-1;
+                    for(int j=spos; j<=epos;j++){ // от 0 до пробела после первого слова
+                        func1+=sentence[j];
+                    }
+                    if(func1.find(word)!='\0'&&func1.size()%2!=0){
+                        int wordssize=func1.size()/2;
+                        func1.insert(wordssize+1,word);
+                        out+= func1;
+                        cout<<func1<<endl;
+                    }
+                    else {
+                        out+=func1;
+                    }
+
+                    func1="";
+                    out+=" ";
+                    spos=i+1;
+                }
+
+
+            }
+            sentence=out;
+    };
+
+    void sortSentence(){
+        int i=0;
+        string out;
+        string tmp;
+        vector<string>STR;
+        for(i=0; i<sentence.size();i++){
+            if(sentence[i]==' '){
+                STR.push_back(tmp);
+                tmp="";
+                i++;
+            }
+            tmp+=sentence[i];
+        }
+
+        for(i=0; i<STR.size();i++){
+            for(int j = (STR.size()-1);j>=(i+1);j--){
+
+                if(STR[j].size()>STR[j-1].size()){
+                    tmp = STR[j];
+                    STR[j]=STR[j-1];
+                    STR[j-1]=tmp;
+                }
+            }
+        }
+        for(i=0; i<STR.size();i++){
+            out+=STR[i]+" ";
+        }
+
+        sentence=out;
+        output_sentence();
+
+    };
+    void buildAnythingInThisFExercise(){
+        int p= 0;
+        bool lastIn,firstIn;
+        int i=0;
+        string out;
+        string tmp;
+        vector<string>STR;
+        for(i=0; i<sentence2.size();i++){
+            if(sentence2[i]==' '){
+                STR.push_back(tmp);
+                tmp="";
+                i++;
+            }
+            tmp+=sentence2[i];
+        }
+
+        for(i=0; i<=STR.size();i++){
+            while ( (p = STR[i].find(word2, p)) != string::npos) {
+                if(p==0){
+                    firstIn=true;
+                }
+                if(p>0){
+                    lastIn=true;
+                }
+                p++;
+
+            }
+           if(word2.size()*2<STR[i].size()&&firstIn==true&&lastIn==true){
+                STR[i]=STR[i].erase(0,word2.size());
+                out+=STR[i]+" ";
+            }
+
+            p=0;
+            firstIn=false;
+            lastIn=false;
+        }
+        sentence2=out;
+        cout<<endl<<"Обрезанное предложение: ";
+        cout<<sentence2<<endl<<endl;
+    };
+};
+
+
+class VEC{
+private:
+    vector<double> a;
+    int whole;    //целая часть
+    double frac;  // Дробная часть
+
+
+public:
+    VEC(){
+        whole=0;
+        frac=0;
+        /*for(int i = 0; i < 10; i++){
+            a.push_back(rand()%3);
+
+        }*/
+        a.push_back(7);
+        a.push_back(2);
+        a.push_back(0);
+        a.push_back(9);
+        a.push_back(6);
+        a.push_back(-5);
+        a.push_back(2);
+        a.push_back(-4);
+        a.push_back(9);
+        a.push_back(9);
+
+    };
+    void divide(){
+        cout << endl;
+        for (int i = 0; i < a.size(); i++)
+        {
+            // 1.5
+
+            whole = (int) a[i];  //Целая часть хранится      1,2,3,4,5
+            frac = a[i]-whole;   // Дробная часть хранится   0.5
+            if(frac==0){
+                a[i]/=2;
+            }
+            cout <<"  " << a[i] << "  ";
+
+
+            whole = 0;
+            frac = 0;
+        }
+        cout << endl;
+
+    }
+    double getSize(){
+        //возвраt
+        return a.size();
+
+    }
+    void getVec(){
+        cout << endl;
+        for(int i=0;i<a.size();i++){
+            cout<<"  " <<a[i]<<"  ";
+        }
+        cout << endl;
+
+    }
+    int getLastNegative(){
+        int lastNeg= 0;
+        for(int i=0;i<a.size();i++){
+            if(a[i]<0)
+                lastNeg=i;
+        }
+        cout << endl;
+        return lastNeg;
+    }
+    void delElementInRange(double minnum,double maxnum){
+        for(int i=0; i<a.size();i++){
+            if(((abs(a[i])>=minnum)  &&  (abs(a[i])<=maxnum))){
+                a.erase(a.begin()+i);
+                i--;
+            }
+        }
+        getVec();
+        cout<<endl;
+    }
+
+    void getSortVec(){
+        sort(a.begin()+5,a.end());
+        getVec();
+        cout<<endl;
+        return;
+    }
+    void getNullInFirst(){
+        //    1 2 3 4 0 6 7 0 9
+        for(int i =0; i<a.size(); i++){
+            if(a[i]==0){
+                int z = a[i];
+                a.erase(a.begin()+i);
+                i--;
+                reverse(a.begin(),a.end());
+                a.push_back(z);
+                reverse(a.begin(),a.end());
+            }
+        }
+        getVec();
+        return;
+
+    }
+
+    void NayTi_KamenSchast_ya(){
+        double midlArifmSum=0.0;
+        int amountnumFromLastMinNum;
+        int max=0;
+        int min=444;
+        int indexMin=0;
+        for (int i =0; i<a.size(); i++){
+            if(a[i]>max){
+                max=a[i]; // максимальный
+            }
+
+        }
+        for (int i =0; i<a.size(); i++){
+            if(a[i]<=min&&a[i]>0){
+                min=a[i];
+                indexMin=i;
+            }
+        }
+        cout <<endl<<" MAX :  "<<max;
+        cout <<endl<<" MIN :  "<<min<<endl;
+        amountnumFromLastMinNum=a.size()-1-indexMin;
+        for (int i =0; i<a.size(); i++){
+           if(a[i]==max){                      // нашли дальше цикл не нужен
+                    for(int j=0; j<i; j++){
+                    if(a[j]>=a[j+1])             // условие верно дальше проверяем условие минимума
+                        continue;
+
+                    else if(j+1==i){
+                        break;
+                    }
+                    else {
+                        cout<<"error"<<endl;
+                        return;
+                        }
+
+                    }
+                    for(int j=indexMin+1; j<a.size(); j++){ //не включая последний минимум
+                        midlArifmSum +=a[j];
+                    }
+                    midlArifmSum/=amountnumFromLastMinNum;
+                    cout<<endl<<"Среднее арифметическое  "<<midlArifmSum<<endl;
+               break;
+
+           }
+        }
+
+    }
+
+
+};
+
+int main()
+{
+srand(time(NULL));
+setlocale(LC_ALL, "RUS");
+
+Sentence test;
+
+test.output_sentence();
+test.output_word();
+cout<<endl;
+test.findWord();
+test.output_sentence();   
+test.sortSentence();        
+test.buildAnythingInThisFExercise();
+    
+VEC arr;
+
+    while(true){
+        int n;
+        cout<<"1   Вывод"<<endl;
+        cout<<"2   Divide"<<endl;
+        cout<<"3   last"<<endl;
+        cout<<"4   DELETE range"<<endl;
+        cout<<"5   Sort second part"<<endl;
+        cout<<"6   Nulls and after num "<<endl;
+        cout<<"7   С бодуна  "<<endl;
+        cin>>n;
+        switch (n){
+            case 1:
+                cout<<"Array: "<<endl;
+                arr.getVec();
+                break;
+            case 2:
+                cout<<"Divide"<<endl;
+                arr.divide();
+            case 3:
+                cout<<endl<<"Last negative element have number:   "<<arr.getLastNegative()<<endl;
+                break;
+            case 4:
+                cout<<"elements after deleting"<<endl;
+                arr.delElementInRange(4,5);
+                break;
+            case 5:
+                cout<<"sort second part"<<endl;
+                arr.getSortVec();
+                break;
+            case 6:
+                cout<<"Nulls and after num "<<endl;
+                arr.getNullInFirst();
+                break;
+            case 7:
+                cout<<"Среднее арифметическое "<<endl;
+                arr.NayTi_KamenSchast_ya();
+                break;
+            default:
+                return 0;
+        }
+
+
+
+    }
+}
