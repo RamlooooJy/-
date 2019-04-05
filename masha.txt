@@ -1,0 +1,86 @@
+#include <iostream>
+using namespace std;
+
+
+class PhNumber{
+private:
+    int num;
+    string number="";
+    int mask;
+public:
+    void setNum(){
+        cout<<"Введите номер с 7"<<endl;
+        for(int i=0; i <11;i++){
+            cin>>num;
+            try{
+                if(!cin){
+                    throw "error";
+                }
+                else if(i==0&&num!=7){
+                    throw 123;
+                    }
+                else if(num>9){
+                    throw 10.2;
+                }
+                else if(i==1&&num!=9){
+                    throw 'a';
+                }
+
+            }
+
+            catch(double q){
+                cout<<"введите цифру от 0 до 9";
+                cin.clear();
+                i--;
+                continue;
+            }
+            catch (char const* err){
+                cout<<err;
+                return;
+            }
+            catch (int err){
+                cout<<"error, введите цифру 7";
+                return;
+            }
+            catch (char e){
+                cout<<"Введите маску с цифры 9";
+                cin.clear();
+                i--;
+                continue;
+            }
+
+
+
+            if(i==0){
+                number+="+";
+            }
+            else if(i==1){
+                number+="(";
+            }
+            if(i>=6&&i%2!=0){
+                number+=" - ";
+            }
+            number+=to_string(num);
+            if(i==3){
+                number+=")";
+            }
+        }
+        return;
+
+    };
+    void getNumber(){
+        cout<<endl<<"номер:    "<<number;
+    }
+
+
+
+};
+
+int main() {
+
+    PhNumber masha;
+    masha.setNum();
+    masha.getNumber();
+
+    return 0;
+}
