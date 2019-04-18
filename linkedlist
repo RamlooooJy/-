@@ -104,12 +104,6 @@ int main(){
     cout<<"----------"<<endl;
     list=add_element_start(13,list);
     returnL(list);
-    /*list=add_element_start(-55,list);
-    cout<<"----------"<<endl;
-    returnL(list);
-    cout<<"----------"<<endl;*/
-    //list=removeNegL(list);
-    //returnL(list);
 
 
     return 0;
