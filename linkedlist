@@ -1,0 +1,116 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+
+typedef struct Node
+{
+    int value;
+    struct Node *next;
+} Spisok;
+Node *head = NULL;
+
+//создание корня списка для упрощения задачи
+Spisok *create(int data)
+{
+    Spisok *tmp = (Spisok*)malloc(sizeof(Spisok));
+    tmp -> value = data;
+    tmp -> next = NULL;
+    return(tmp);
+
+}
+
+//Добавление элемента в начало списка
+Spisok *add_element_start(int data, Spisok *head)
+{
+    Spisok *tmp = (Spisok*)malloc(sizeof(Spisok));
+    tmp -> value = data;
+    tmp -> next = head;
+    return(tmp);
+}
+
+//вывод списка
+void returnL(Spisok *tmp){
+    if(tmp==NULL){
+        cout<<endl<<"Список пуст";
+    }
+    while (tmp != NULL){
+        cout<<tmp->value<<endl;
+        tmp = tmp -> next;
+    }
+
+}
+//удаление всего списка
+Spisok*removeL(Spisok *head){
+    while(head!=NULL){
+        Spisok*p=head; //создание временной переменной списка
+        head=head->next;
+        free(p);
+    }
+    return NULL;
+}
+//удаление отрицательных значений списка
+Spisok*removeNegL(Spisok*head){
+    Spisok*tmp,*pred;  //временная голова списка и указатель на предыдущий элемент списка
+    tmp=head;  //запомним голову списка
+    while(head!=NULL){
+        Spisok*p=NULL;
+
+        if(tmp==head&&tmp->value<0){ //если элемент списка в голове списка и меньше 0
+
+            head=head->next;  //меняем голову списка
+            pred=head;
+            p=tmp;
+            free(p); //очищаем память под элемент
+            tmp=head;
+        }
+
+
+        else if(head->value<0){
+
+            p=head;      //запоминаем элемент
+            head=pred;   // меняем текущую голову на предыдущую
+
+            head->next=p->next;  //указатель на узел через следующий элемент
+            free(p);
+            pred=head;
+            head=head->next;
+
+        }
+
+        else{
+            pred=head;
+            head=head->next;
+        }
+    }
+    return tmp;
+
+}
+
+
+int main(){
+
+        Node * list=create(-5);
+    list=add_element_start(-15,list);
+    list=add_element_start(55,list);
+    list=add_element_start(25,list);
+    list=add_element_start(-999,list);
+
+    returnL(list);
+    list=removeNegL(list);
+    cout<<"----------"<<endl;
+    returnL(list);
+    cout<<"----------"<<endl;
+    list=add_element_start(13,list);
+    returnL(list);
+    /*list=add_element_start(-55,list);
+    cout<<"----------"<<endl;
+    returnL(list);
+    cout<<"----------"<<endl;*/
+    //list=removeNegL(list);
+    //returnL(list);
+
+
+    return 0;
+}
