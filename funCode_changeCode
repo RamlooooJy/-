@@ -1,0 +1,116 @@
+#include <iostream>
+#include <conio.h>
+using namespace std;
+class p {
+public:
+	bool out[7] = { false,false,false,false,false,false,false };
+	bool code[7] = { false,false,false,false,false,false,false };
+	int cnt = 0;
+
+	void change() {
+		char symbol = _getch();
+
+		while ((symbol = _getch())) {
+			switch (symbol) {
+			case 72:
+				system("cls");
+				if(code[cnt]==false) code[cnt] = true;
+				else code[cnt] = false;
+				for (int i = 0; i < 7; i++) cout << code[i];
+				cout<<endl;
+
+				std::cout << "Вверх\n"<<cnt<<endl;
+				cout << "Код ввода" << endl << endl << endl;
+				for (int i = 0; i < 7; i++) {
+					cout << code[i];
+				}
+				cout << endl;
+				cout << "сохраненный код" << endl;
+				for (int i = 0; i < 7; i++) {
+					cout << out[i];
+				}
+				cout << endl;
+				break;
+			case 80:
+				system("cls");
+				if (code[cnt] == false) code[cnt] = true;
+				else code[cnt] = false;
+				for (int i = 0; i < 7; i++) cout << code[i];
+				cout << endl;
+
+				std::cout << "Вниз\n" << cnt << endl;
+				cout << "Код ввода" << endl << endl << endl;
+				for (int i = 0; i < 7; i++) {
+					cout << code[i];
+				}
+				cout << endl;
+				cout << "сохраненный код" << endl;
+				for (int i = 0; i < 7; i++) {
+					cout << out[i];
+				}
+				cout << endl;
+				break;
+			case 77:
+				system("cls");
+				if (cnt == 6) cnt = -1;
+				cnt++;
+				for (int i = 0; i < 7; i++) cout << code[i];
+				cout << endl;
+				std::cout << "Вправо\n" << cnt << endl;
+				cout << "Код ввода" << endl << endl << endl;
+				for (int i = 0; i < 7; i++) {
+					cout << code[i];
+				}
+				cout << endl;
+				cout << "сохраненный код" << endl;
+				for (int i = 0; i < 7; i++) {
+					cout << out[i];
+				}
+				cout << endl;
+				break;
+			case 75:
+				system("cls");
+				if (cnt == 0) cnt = 7;
+				cnt--;
+				for (int i = 0; i < 7; i++) cout << code[i];
+				cout << endl;
+				std::cout << "Влево\n" << cnt<<endl;
+				cout << "Код ввода" << endl << endl << endl;
+				for (int i = 0; i < 7; i++) {
+					cout << code[i];
+				}
+				cout << endl;
+				cout << "сохраненный код" << endl;
+				for (int i = 0; i < 7; i++) {
+					cout << out[i];
+				}
+				cout << endl;
+				break;
+			case 32:
+				system("cls");
+				cout << "Код ввода"<<endl << endl << endl;
+				for (int i = 0; i < 7; i++) {
+					out[i] = code[i];
+					cout << code[i];
+				}
+				cout << endl;
+				cout << "сохраненный код" << endl;
+				for (int i = 0; i < 7; i++) {
+					cout << out[i];
+				}
+				cout << endl;
+				std::cout << "Пробел\n" << cnt;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+};
+
+int main(int argc, char* argv[]) {
+	setlocale(0, "rus");
+	p l;
+	l.change();
+	return 0;
+}
