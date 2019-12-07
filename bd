@@ -10,81 +10,92 @@
 #include <iostream> 
 using namespace std;
 
-// DESKTOP-49N0HAU\SQLEXPRESS   ----- server
-// DESKTOP-49N0HAU\bomb   ---------- connection 
+// Hosss   ----- ODBC
+// SERVER=DESKTOP-49N0HAU\\SQLEXPRESS   ---------- server with double slash 
 
 
 
 
-SQLCHAR connectionStringDSN[256] = "DSN=NorthWindConnection;UID=sa; PWD=;"; 
-SQLCHAR connectionStringDriver[256] = "DRIVER={SQL Server};SERVER=IDUBOV;"   "UID=sa;PWD=;DATABASE=Northwind;";
-void errorMessage(const char* s) { 
-	cout << "*** Error ***  " << s << endl; 
+SQLCHAR connectionStringDSN[256] = "DSN=Hosss;UID=a; PWD=a;"; 
+SQLCHAR connectionStringDriver[256] = "DRIVER={SQL Server};SERVER=DESKTOP-49N0HAU\\SQLEXPRESS;"   "UID=a;PWD=a;DATABASE=labs;";
+void errorMessage(const char* s) {
+	cout << "*** Error ***  " << s << endl;
 }
 
-void Message(const char* s) { 
-	cout << s << endl; 
+void Message(const char* s) {
+	cout << s << endl;
 }
 
 void DoSelect(SQLCHAR connectionString[256]) {
-	HENV    hEnv;    
-	HDBC    hDbc;  
-	HSTMT   hStmt = SQL_NULL_HSTMT;  
-	RETCODE rc;  
-	SQLSMALLINT cbOutConStr = 0;  
+	HENV    hEnv;
+	HDBC    hDbc;
+	HSTMT   hStmt = SQL_NULL_HSTMT;
+	RETCODE rc;
+	SQLSMALLINT cbOutConStr = 0;
 	//Получить соединение с СУБД
-	SQLCHAR outConnectionString[256];  
+	SQLCHAR outConnectionString[256];
 	SQLAllocEnv(&hEnv);
-	SQLAllocConnect(hEnv, &hDbc);  
+	SQLAllocConnect(hEnv, &hDbc);
 	rc = SQLDriverConnect(hDbc, NULL, connectionString, SQL_NTS, outConnectionString, sizeof(outConnectionString), &cbOutConStr, SQL_DRIVER_COMPLETE); //SQL_DRIVER_NOPROMPT SQL_DRIVER_COMPLETE 
-	if (!(rc == SQL_SUCCESS) && !(rc == SQL_SUCCESS_WITH_INFO)) { 
+	if (!(rc == SQL_SUCCESS) && !(rc == SQL_SUCCESS_WITH_INFO)) {
 		//cout << SQL_SUCCESS << "   " << SQL_SUCCESS_WITH_INFO;
-		errorMessage("Error SQLDriverConnect");   
-		return; 
+		errorMessage("Error SQLDriverConnect");
+		return;
 	}
-	SQLHSTMT hstmt;     
-	rc = SQLAllocStmt(hDbc, &hstmt);  
-	
-	SQLCHAR command[256] = "SELECT EmployeeId,Address FROM Employees";;
+	SQLHSTMT hstmt;
+	rc = SQLAllocStmt(hDbc, &hstmt);
+
+	SQLCHAR command[256] = "SELECT * FROM doctor";;
 	rc = SQLExecDirect(hstmt, command, SQL_NTS);
-	SQLINTEGER EmployeeId;  
-	SQLCHAR Address[60];  
-	SQLINTEGER cbEmployeeId, cbAddress;
-	if (rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO) {   
-		/* Bind columns 1, 2 */   
-		SQLBindCol(hstmt, 1, SQL_C_ULONG, &EmployeeId, 0, &cbEmployeeId);   
-		SQLBindCol(hstmt, 2, SQL_C_CHAR, Address, 60, &cbAddress);  /* Fetch and print each row of data. On */   
-		/* an error, display a message and exit. */   
+	SQLINTEGER DoctorId;
+	SQLCHAR Surname[60];
+	SQLCHAR Name[60];
+	SQLCHAR Post[60];
+	SQLINTEGER Department;
+	SQLCHAR phonenumber[60];
+	SQLINTEGER cbDoctorId, cbSurname, cbName, cbPost, cbDepartment, cbPhonenumber;
+	if (rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO) {
+		/* Bind columns 1, 2 */
+		SQLBindCol(hstmt, 1, SQL_C_ULONG, &DoctorId, 0, &cbDoctorId);
+		SQLBindCol(hstmt, 2, SQL_C_CHAR, Surname, 60, &cbSurname);  /* Fetch and print each row of data. On */
+		SQLBindCol(hstmt, 3, SQL_C_CHAR, Name, 60, &cbName);  /* Fetch and print each row of data. On */
+		SQLBindCol(hstmt, 4, SQL_C_CHAR, Post, 60, &cbPost);  /* Fetch and print each row of data. On */
+		SQLBindCol(hstmt, 5, SQL_C_ULONG, &Department, 0, &cbDepartment);
+		SQLBindCol(hstmt, 6, SQL_C_CHAR, phonenumber, 60, &cbPhonenumber);  /* Fetch and print each row of data. On */
+
+
+		/* an error, display a message and exit. */
 		while (TRUE) {
-			rc = SQLFetch(hstmt);    
-			if (rc == SQL_ERROR) { 
-				errorMessage("Error in the fetch"); 
-			}    
-			if (rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO){
-				cout << EmployeeId << " " << Address << endl; 
+			rc = SQLFetch(hstmt);
+			if (rc == SQL_ERROR) {
+				errorMessage("Error in the fetch");
 			}
-			else { 
-				break; 
+			if (rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO) {
+				cout << DoctorId << " " << Surname << Name << " " << Post << Department << " " << phonenumber << endl;
 			}
-		}   
+			else {
+				break;
+			}
+		}
 		//    SQLFreeStmt(hstmt, SQL_DROP);   
-		SQLDisconnect(hDbc);   
-		SQLFreeConnect(hDbc);   
-		SQLFreeEnv(hEnv);  }  
-	else   
-		errorMessage("Exec SQL error"); 
+		SQLDisconnect(hDbc);
+		SQLFreeConnect(hDbc);
+		SQLFreeEnv(hEnv);
+	}
+	else
+		errorMessage("Exec SQL error");
 }
 
 void ListDSN() {
 	const short SQL_MAX_DSN_LENGTH_ = SQL_MAX_DSN_LENGTH;
-	UCHAR szDSN[SQL_MAX_DSN_LENGTH + 1];  
-	UCHAR szDescription[256];   
-	short wDSNLen;   
-	SQLSMALLINT wDesLen;   
-	int retCode;   
-	SQLHENV hEnv = NULL;   
-	string DSNName;   
-	string resultString;   
+	UCHAR szDSN[SQL_MAX_DSN_LENGTH + 1];
+	UCHAR szDescription[256];
+	short wDSNLen;
+	SQLSMALLINT wDesLen;
+	int retCode;
+	SQLHENV hEnv = NULL;
+	string DSNName;
+	string resultString;
 	string Descr;
 	SQLAllocEnv(&hEnv);
 	retCode = SQLDataSources(hEnv, SQL_FETCH_FIRST, szDSN, SQL_MAX_DSN_LENGTH_ + 1, &wDSNLen, szDescription, 256, &wDesLen);
@@ -94,34 +105,34 @@ void ListDSN() {
 	}
 	SQLFreeEnv(hEnv);   Message(resultString.c_str());
 }
- void ShowMenu() { 
-	int choice = 0;  
-	bool done = false;  
-	do { 
-		cout << "\n*** MENU ***" << endl;   
-		cout << "0 - output" << endl;   
-		cout << "1 - list all DNS" << endl;   
-		cout << "2 - select (using DNS)" << endl;   
-		cout << "3 - select (using driver directly)" << endl;   
-		cout << "Choice : ";   
-		cin >> choice;   
-		switch (choice) { 
-		default: done = true; 
-			break;   
-		case 1: 
-			ListDSN(); 
-			break;   
+void ShowMenu() {
+	int choice = 0;
+	bool done = false;
+	do {
+		cout << "\n*** MENU ***" << endl;
+		cout << "0 - output" << endl;
+		cout << "1 - list all DNS" << endl;
+		cout << "2 - select (using DNS)" << endl;
+		cout << "3 - select (using driver directly)" << endl;
+		cout << "Choice : ";
+		cin >> choice;
+		switch (choice) {
+		default: done = true;
+			break;
+		case 1:
+			ListDSN();
+			break;
 		case 2:
-			DoSelect(connectionStringDSN); 
-			break;  
-		case 3: 
-			DoSelect(connectionStringDriver); 
-			break; 
-	} 
-	} while (!done); 
- }
+			DoSelect(connectionStringDSN);
+			break;
+		case 3:
+			DoSelect(connectionStringDriver);
+			break;
+		}
+	} while (!done);
+}
 
- int main(int count, char* cparams[]) { 
-	 ShowMenu();   
-	 return 0; 
- }
+int main(int count, char* cparams[]) {
+	ShowMenu();
+	return 0;
+}
