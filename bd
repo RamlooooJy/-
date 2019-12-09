@@ -10,14 +10,15 @@
 #include <iostream> 
 using namespace std;
 
-// Hosss   ----- ODBC
-// SERVER=DESKTOP-49N0HAU\\SQLEXPRESS   ---------- server with double slash 
+// DESKTOP-49N0HAU\SQLEXPRESS   ----- server
+// DESKTOP-49N0HAU\bomb   ---------- connection 
 
 
 
 
-SQLCHAR connectionStringDSN[256] = "DSN=Hosss;UID=a; PWD=a;"; 
-SQLCHAR connectionStringDriver[256] = "DRIVER={SQL Server};SERVER=DESKTOP-49N0HAU\\SQLEXPRESS;"   "UID=a;PWD=a;DATABASE=labs;";
+SQLCHAR connectionStringDSN[256] = "DSN=Hosss;UID=adm; PWD=adm;";
+SQLCHAR connectionStringDriver[256] = "DRIVER={SQL Server};SERVER=DESKTOP-49N0HAU\\SQLEXPRESS;"   "UID=adm;PWD=adm;DATABASE=labs;";
+
 void errorMessage(const char* s) {
 	cout << "*** Error ***  " << s << endl;
 }
@@ -45,33 +46,38 @@ void DoSelect(SQLCHAR connectionString[256]) {
 	SQLHSTMT hstmt;
 	rc = SQLAllocStmt(hDbc, &hstmt);
 
-	SQLCHAR command[256] = "SELECT * FROM doctor";;
+	SQLCHAR command[256] = "SELECT * FROM laba4";;
 	rc = SQLExecDirect(hstmt, command, SQL_NTS);
-	SQLINTEGER DoctorId;
+	SQLINTEGER Id;
 	SQLCHAR Surname[60];
-	SQLCHAR Name[60];
-	SQLCHAR Post[60];
-	SQLINTEGER Department;
-	SQLCHAR phonenumber[60];
-	SQLINTEGER cbDoctorId, cbSurname, cbName, cbPost, cbDepartment, cbPhonenumber;
+	SQLDOUBLE Salary;
+	SQLINTEGER cbId, cbSurname, cbSalary;
+	//SQLCHAR Name[60];
+	//SQLCHAR Post[60];
+	//SQLINTEGER Department;
+	//SQLCHAR phonenumber[60];
+	//SQLINTEGER cbDoctorId, cbSurname, cbName, cbPost, cbDepartment, cbPhonenumber;
 	if (rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO) {
 		/* Bind columns 1, 2 */
-		SQLBindCol(hstmt, 1, SQL_C_ULONG, &DoctorId, 0, &cbDoctorId);
+		SQLBindCol(hstmt, 1, SQL_C_ULONG, &Id, 0, &cbId);
 		SQLBindCol(hstmt, 2, SQL_C_CHAR, Surname, 60, &cbSurname);  /* Fetch and print each row of data. On */
-		SQLBindCol(hstmt, 3, SQL_C_CHAR, Name, 60, &cbName);  /* Fetch and print each row of data. On */
-		SQLBindCol(hstmt, 4, SQL_C_CHAR, Post, 60, &cbPost);  /* Fetch and print each row of data. On */
-		SQLBindCol(hstmt, 5, SQL_C_ULONG, &Department, 0, &cbDepartment);
-		SQLBindCol(hstmt, 6, SQL_C_CHAR, phonenumber, 60, &cbPhonenumber);  /* Fetch and print each row of data. On */
+		SQLBindCol(hstmt, 3, SQL_C_DOUBLE, &Salary, 0, &cbSalary);
+		//SQLBindCol(hstmt, 3, SQL_C_CHAR, Name, 60, &cbName);  /* Fetch and print each row of data. On */
+		//SQLBindCol(hstmt, 4, SQL_C_CHAR, Post, 60, &cbPost);  /* Fetch and print each row of data. On */
+		//SQLBindCol(hstmt, 5, SQL_C_ULONG, &Department, 0, &cbDepartment);
+		//SQLBindCol(hstmt, 6, SQL_C_CHAR, phonenumber, 60, &cbPhonenumber);  /* Fetch and print each row of data. On */
 
 
 		/* an error, display a message and exit. */
+
 		while (TRUE) {
 			rc = SQLFetch(hstmt);
 			if (rc == SQL_ERROR) {
 				errorMessage("Error in the fetch");
 			}
 			if (rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO) {
-				cout << DoctorId << " " << Surname << Name << " " << Post << Department << " " << phonenumber << endl;
+				//cout << DoctorId << " " << Surname << Name << " " << Post << Department << " " << phonenumber << endl;
+				cout << Id << "  " << Surname << "  " << Salary<<endl;
 			}
 			else {
 				break;
